@@ -4,6 +4,7 @@ import { prerenderBadApple, type PrerenderBadAppleConfig } from "./prerender-bad
 
 export class BadApple extends Plugin {
   private prerenderPromise: Promise<ArrayBuffer[]>;
+  private audio: HTMLAudioElement | null = null;
 
   static get pluginName() {
     return "BadApple" as const;
@@ -15,6 +16,12 @@ export class BadApple extends Plugin {
     this.prerenderPromise = prerenderBadApple(
       editor.config.get("badApple")!
     );
+
+    // Create audio element
+    this.audio = document.createElement("audio");
+    this.audio.src = "/bad-apple.mp4"; // Using same video file for audio
+    this.audio.style.display = "none";
+    document.body.appendChild(this.audio);
   }
 
   public init() {
@@ -102,9 +109,16 @@ export class BadApple extends Plugin {
     const { sampleRate, width, height } = editor.config.get("badApple")!;
     const frames = await this.prerenderPromise;
 
+    // Start audio playback
+    if (this.audio) {
+      this.audio.currentTime = 0;
+      this.audio.play().catch(console.error);
+    }
+
     const intervalId = setInterval(() => {
       if (frameIndex >= frames.length) {
         clearInterval(intervalId);
+        this._stopAudio();
         return;
       }
 
@@ -140,7 +154,34 @@ export class BadApple extends Plugin {
 
     return () => {
       window.clearInterval(intervalId);
+      this._stopAudio();
+      this._clearDocument();
     };
+  }
+
+  private _stopAudio() {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+    }
+  }
+
+  private _clearDocument() {
+    const editor = this.editor;
+    const model = editor.model;
+
+    model.change((writer) => {
+      const root = model.document.getRoot()!;
+      writer.remove(writer.createRangeIn(root));
+    });
+  }
+
+  public destroy() {
+    if (this.audio) {
+      document.body.removeChild(this.audio);
+      this.audio = null;
+    }
+    super.destroy();
   }
 }
 
