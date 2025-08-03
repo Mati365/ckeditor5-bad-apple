@@ -1,0 +1,21 @@
+.editor-container {
+  width: 1300px;
+  margin: 64px auto;
+
+  & .ck-content {
+    --ck-content-font-family: monospace;
+    --ck-content-font-size: 16px;
+  }
+
+  & .ck-content table td {
+    width: 8px;
+    height: 8px;
+    padding: 0 !important;
+    min-width: 8px;
+  }
+
+  & .ck-content table {
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+}

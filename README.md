@@ -3,9 +3,24 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](http://makeapullrequest.com)
 
-Because who *wouldn't* want to embed a full ASCII animation directly inside a WYSIWYG editor?  
-CKEditor 5 handles *Bad Apple* so smoothly it makes other editors struggle with rendering bold text.  
+Because who *wouldn't* want to embed a full ASCII animation directly inside a WYSIWYG editor?
+CKEditor 5 handles *Bad Apple* so smoothly it makes other editors struggle with rendering bold text.
 Perfect for showing off speed, absurdity and complete disregard for what “serious software” should do.
+
+![CKEditor 5 Bad Apple](docs/bad-apple.gif)
+
+## Running
+
+To run the demo, clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/Mati365/ckeditor5-bad-apple.git
+cd ckeditor5-bad-apple
+npm install
+npm run dev
+```
+
+Then open your browser and navigate to `http://localhost:3000`. Enjoy the mesmerizing animation of *Bad Apple* right inside CKEditor 5!
 
 ## Psst... 👀
 
@@ -15,13 +30,13 @@ Looking for similar projects or inspiration? Check out these repositories:
 
 - [ckeditor5-phoenix](https://github.com/Mati365/ckeditor5-phoenix)
   Seamless CKEditor 5 integration for Phoenix Framework. Plug & play support for LiveView forms with dynamic content, localization, and custom builds.
-  
+
 - [ckeditor5-rails](https://github.com/Mati365/ckeditor5-rails)
   Effortless CKEditor 5 integration for Ruby on Rails. Works seamlessly with standard forms, Turbo, and Hotwire. Easy setup, custom builds, and localization support.
 
 - [ckeditor5-livewire](https://github.com/Mati365/ckeditor5-livewire)
   Plug-and-play CKEditor 5 solution for Laravel + Livewire applications. Fully compatible with Blade forms. Includes JavaScript hooks, flexible configuration, and easy customization.
-  
+
 ## Trademarks 📜
 
 Information about CKEditor® trademarks and licensing. Clarifies the relationship between this package and CKSource.
