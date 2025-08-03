@@ -3,9 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](http://makeapullrequest.com)
 
-Because who *wouldn't* want to embed a full ASCII animation directly inside a WYSIWYG editor?
-CKEditor 5 handles *Bad Apple* so smoothly it makes other editors struggle with rendering bold text.
-Perfect for showing off speed, absurdity and complete disregard for what “serious software” should do.
+Ever looked at a table and thought, *“Yep, that’s the perfect place to run a monochrome anime MV at 30 FPS”*? No? Well, too late. I did it anyway. CKEditor 5 now politely ignores all notions of sane use-cases and slam-dunks **Bad Apple** straight into a `<tbody>` like it’s trying to break your GPU out of spite. Hundreds of `<td>`s blink on and off in synchronized agony, forming a glorious crime against productivity. Absolutely zero real-world justification. Maximum commitment to bit-crushing silliness. Yes, it works.
 
 ![CKEditor 5 Bad Apple](docs/bad-apple.gif)
 
@@ -20,7 +18,7 @@ npm install
 npm run dev
 ```
 
-Then open your browser and navigate to `http://localhost:3000`. Enjoy the mesmerizing animation of *Bad Apple* right inside CKEditor 5!
+Then open your browser and navigate to `http://localhost:3000`. Enjoy your newfound superpower of wasting time in the most elaborate way possible!
 
 ## Psst... 👀
 
