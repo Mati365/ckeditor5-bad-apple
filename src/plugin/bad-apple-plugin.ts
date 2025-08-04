@@ -115,45 +115,68 @@ export class BadApple extends Plugin {
       this.audio.play().catch(console.error);
     }
 
-    const intervalId = setInterval(() => {
+    let animationFrameId: number;
+    let lastFrameIndex = -1;
+
+    const animationLoop = () => {
+      const audioCurrentTime = this.audio?.currentTime ?? 0;
+      frameIndex = Math.floor((audioCurrentTime * 1000) / sampleRate);
+
       if (frameIndex >= frames.length) {
-        clearInterval(intervalId);
         this._stopAudio();
         return;
       }
 
-      const frameBuffer = frames[frameIndex];
-      const frameView = new Uint8Array(frameBuffer);
+      if (frameIndex > lastFrameIndex) {
+        const prevFrame = lastFrameIndex >= 0 ? frames[lastFrameIndex] : null;
+        const frameBuffer = frames[frameIndex];
+        const frameView = new Uint8Array(frameBuffer);
 
-      editor.model.change((writer) => {
-        const root = editor.model.document.getRoot()!;
-        const table = root.getChild(0) as ModelElement;
+        editor.model.change((writer) => {
+          const root = editor.model.document.getRoot()!;
+          const table = root.getChild(0) as ModelElement;
 
-        for (let y = 0; y < height; y++) {
-          const row = table.getChild(y) as ModelElement;
+          for (let y = 0; y < height; y++) {
+            const row = table.getChild(y) as ModelElement;
 
-          for (let x = 0; x < width; x++) {
-            const cell = row.getChild(x) as ModelElement;
+            for (let x = 0; x < width; x++) {
+              const cell = row.getChild(x) as ModelElement;
 
-            const bitIndex = y * width + x;
-            const byteIndex = Math.floor(bitIndex / 8);
-            const bitInByte = bitIndex % 8;
-            const isSet = (frameView[byteIndex] & (1 << bitInByte)) !== 0;
+              const bitIndex = y * width + x;
+              const byteIndex = Math.floor(bitIndex / 8);
+              const bitInByte = bitIndex % 8;
+              const isSet = (frameView[byteIndex] & (1 << bitInByte)) !== 0;
+              const prevIsSet = prevFrame
+                ? (new Uint8Array(prevFrame)[byteIndex] & (1 << bitInByte)) !== 0
+                : false;
 
-            if (isSet) {
-              writer.setAttribute("tableCellBackgroundColor", "#000000", cell);
-            } else {
-              writer.removeAttribute("tableCellBackgroundColor", cell);
+              if (prevIsSet !== isSet) {
+                if (isSet) {
+                  writer.setAttribute(
+                    "tableCellBackgroundColor",
+                    "#000000",
+                    cell
+                  );
+                } else {
+                  writer.removeAttribute("tableCellBackgroundColor", cell);
+                }
+              }
             }
           }
-        }
-      });
+        });
 
-      frameIndex++;
-    }, sampleRate);
+        lastFrameIndex = frameIndex;
+      }
+
+      if (!this.audio || !this.audio.paused) {
+        animationFrameId = requestAnimationFrame(animationLoop);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animationLoop);
 
     return () => {
-      window.clearInterval(intervalId);
+      window.cancelAnimationFrame(animationFrameId);
       this._stopAudio();
       this._clearDocument();
     };
